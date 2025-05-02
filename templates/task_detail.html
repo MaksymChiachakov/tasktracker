@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="task-desc">
+<h4>{{ task.title }}</h4>
+<p>{{ task.description }}</p>
+<p>{{ task.priority }}</p>
+<p>{{ task.due_to }}</p>
+
+<a class="btn btn-warning" href="{% url 'task-edit' task.pk %}">Edit</a>
+<a class="btn btn-danger" href="{% url 'task-delete' task.pk %}">Delete</a>
+</div>
+<hr>
+<ul class="comment-list">
+    {% for comment in task.coment_set.all %}
+        <li>
+            <p>{{ comment.user }}</p>
+            <p class="comment-text">{{ comment.content }}</p>
+            {% if comment.coment_pic %}
+                <p><img src="{{comment.coment_pic.url }}" width="350px"></p>
+            {% endif %}
+            <p class="comment-date">--{{comment.created_at}}</p>
+        </li>
+    {% empty %}
+        <li>Коментарів поки що немає.</li>
+    {% endfor %}
+</ul>
+
+{% if user.is_authenticated %}
+<hr>
+<h4>Додати коментар:</h4>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Надіслати">
+</form>
+{% else %}
+<p>Щоб залишити коментар, <a href="{% url 'login' %}">увійдіть</a>.</p>
+{% endif %}
+
+{% endblock %}
