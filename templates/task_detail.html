@@ -1,35 +1,35 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="task-desc">
-<h4>{{ task.title }}</h4>
-<p>{{ task.description }}</p>
-<p>{{ task.priority }}</p>
-<p>{{ task.due_to }}</p>
+<div class="task-desc" style="margin: 16px 32px;">
+    <h4>{{ task.title }}</h4>
+    <p>Description: {{ task.description }}</p>
+    <p>Priority: {{ task.priority }}</p>
+    <p>Date: {{ task.due_to }}</p>
 
-<a class="btn btn-warning" href="{% url 'task-edit' task.pk %}">Edit</a>
-<a class="btn btn-danger" href="{% url 'task-delete' task.pk %}">Delete</a>
+    <a class="btn btn-warning" href="{% url 'task-edit' task.pk %}">Edit</a>
+    <a class="btn btn-danger" href="{% url 'task-delete' task.pk %}">Delete</a>
 </div>
 <hr>
-<ul class="comment-list">
+<ul class="comment-list" style="margin: 12px 16px;">
     {% for comment in task.coment_set.all %}
-        <li>
-            <p>{{ comment.user }}</p>
-            <p class="comment-text">{{ comment.content }}</p>
-            {% if comment.coment_pic %}
-                <p><img src="{{comment.coment_pic.url }}" width="350px"></p>
-            {% endif %}
-            <p class="comment-date">--{{comment.created_at}}</p>
-        </li>
+    <li>
+        <p>{{ comment.user }}</p>
+        <p class="comment-text">{{ comment.content }}</p>
+        {% if comment.coment_pic %}
+        <p><img src="{{comment.coment_pic.url }}" width="350px"></p>
+        {% endif %}
+        <p class="comment-date">--{{comment.created_at}}</p>
+    </li>
     {% empty %}
-        <li>Коментарів поки що немає.</li>
+    <li>Коментарів поки що немає.</li>
     {% endfor %}
 </ul>
 
 {% if user.is_authenticated %}
 <hr>
-<h4>Додати коментар:</h4>
-<form method="post" enctype="multipart/form-data">
+<h4 style="margin: 12px 98px;">Додати коментар:</h4>
+<form method="post" enctype="multipart/form-data" style="margin: 12px 16px;">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Надіслати">
